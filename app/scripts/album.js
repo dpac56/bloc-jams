@@ -45,31 +45,14 @@
 
 if(document.URL.match(/\/album.html/)){
   $(document).ready(function(){
-    var album = albumMarconi;
+    //var album = albumMarconi;
 
-    var $albumTitle = $('.album-title');
-    $albumTitle.text(album.name);
-
-    var $albumArtist = $('.album-artist');
-    $albumArtist.text(album.artist);
-
-    var $albumMeta = $('.album-meta-info');
-    $albumMeta.text(album.year + " on " + album.label);
-
-    var $albumImage = $('.album-image img');
-    $albumImage.attr('src', album.albumArtUrl);
-
-    var $songList = $('.album-song-listing');
-    $songList.empty();
-
-    var songs = album.songs;
-    for (i = 0; i < songs.length; i++){
-      $songList.append(createSongRow(i+1, album.songs[i].name, album.songs[i].length));
-    }
+    changeAlbumView(albumMarconi);
+    
   });
 }
 
-/*
+
 var changeAlbumView = function(album){
    //var album = albumMarconi;
 
@@ -91,5 +74,5 @@ var changeAlbumView = function(album){
     var songs = album.songs;
     for (i = 0; i < songs.length; i++){
       $songList.append(createSongRow(i+1, album.songs[i].name, album.songs[i].length));
+    }
 };
-*/
