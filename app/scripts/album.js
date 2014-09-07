@@ -89,14 +89,33 @@ var clickHandler = function(event){
  };
 
 
-if(document.URL.match(/\/album.html/)){
-  $(document).ready(function(){
-    //var album = albumMarconi;
+var setupSeekBars = function() {
+ 
+   $seekBars = $('.player-bar .seek-bar');
+   $seekBars.click(function(event) {
+     updateSeekPercentage($(this), event);
+   });
 
-    changeAlbumView(albumMarconi);
-    
+    $seekBars.find('.thumb').mousedown(function(event){
+    var $seekBar = $(this).parent();
+
+    $seekBar.addClass('no-animate');
+
+    $(document).bind('mousemove.thumb', function(event){
+      updateSeekPercentage($seekBar, event);
+    });
+
+    //cleanup
+    $(document).bind('mouseup.thumb', function(){
+      $seekBar.addClass('no-animate');
+      
+      $(document).unbind('mousemove.thumb');
+      $(document).unbind('mouseup.thumb');
+    });
+
   });
-}
+ 
+ };
 
 
 var changeAlbumView = function(album){
@@ -122,3 +141,26 @@ var changeAlbumView = function(album){
       $songList.append(createSongRow(i+1, album.songs[i].name, album.songs[i].length));
     }
 };
+
+var updateSeekPercentage = function($seekBar, event){
+  var barWidth = $seekBar.width();
+  var offsetX = event.pageX - $seekBar.offset().left;
+
+  var offsetXPercent = (offsetX  / $seekBar.width()) * 100;
+   offsetXPercent = Math.max(0, offsetXPercent);
+   offsetXPercent = Math.min(100, offsetXPercent);
+ 
+   var percentageString = offsetXPercent + '%';
+   $seekBar.find('.fill').width(percentageString);
+   $seekBar.find('.thumb').css({left: percentageString});
+ };
+
+ if(document.URL.match(/\/album.html/)){
+  $(document).ready(function(){
+    //var album = albumMarconi;
+
+    changeAlbumView(albumMarconi);
+    setupSeekBars();
+    
+  });
+}
